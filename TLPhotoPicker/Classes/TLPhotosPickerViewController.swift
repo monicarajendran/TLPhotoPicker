@@ -359,7 +359,7 @@ extension TLPhotosPickerViewController {
     }
     
     private func reloadTableView() {
-        let count = min(5, self.collections.count)
+        let count = min(7, self.collections.count)
         var frame = self.albumPopView.popupView.frame
         frame.size.height = CGFloat(count * 75)
         self.albumPopView.popupViewHeight.constant = CGFloat(count * 75)
@@ -407,7 +407,7 @@ extension TLPhotosPickerViewController {
         self.focusedCollection?.fetchResult = self.photoLibrary.fetchResult(collection: collection, configure: self.configure)
         reloadIndexPaths.append(IndexPath(row: getfocusedIndex(), section: 0))
         self.albumPopView.tableView.reloadRows(at: reloadIndexPaths, with: .none)
-        self.albumPopView.show(false, duration: 0.2)
+        self.albumPopView.show(false)
         self.updateTitle()
         self.reloadCollectionView()
         self.collectionView.contentOffset = collection.recentPosition
