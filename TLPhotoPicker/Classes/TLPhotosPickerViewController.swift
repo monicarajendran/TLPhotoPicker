@@ -359,7 +359,7 @@ extension TLPhotosPickerViewController {
     }
     
     private func reloadTableView() {
-        let count = min(7, self.collections.count)
+        let count = self.collections.count
         var frame = self.albumPopView.popupView.frame
         frame.size.height = CGFloat(count * 75)
         self.albumPopView.popupViewHeight.constant = CGFloat(count * 75)
