@@ -29,7 +29,7 @@ extension PopupViewProtocol where Self: UIView {
             self.originalFrame = self.popupView.frame
         }
     }
-    func show(_ show: Bool, duration: TimeInterval = 0.1) {
+    func show(_ show: Bool, duration: TimeInterval = 0.2) {
         guard self.show != show else { return }
         self.layer.removeAllAnimations()
         self.isHidden = false
