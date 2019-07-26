@@ -148,6 +148,11 @@ open class TLPhotosPickerViewController: UIViewController {
             self.configure.allowedLivePhotos = newValue
         }
     }
+    
+    var adjustedThumbnailSize: CGSize {
+        return CGSize(width: self.thumbnailSize.width + 40, height: self.thumbnailSize.height + 40)
+    }
+    
     @objc open var canSelectAsset: ((PHAsset) -> Bool)? = nil
     @objc open var didExceedMaximumNumberOfSelection: ((TLPhotosPickerViewController) -> Void)? = nil
     @objc open var handleNoAlbumPermissions: ((TLPhotosPickerViewController) -> Void)? = nil
@@ -889,7 +894,7 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
                 options.deliveryMode = .opportunistic
                 options.resizeMode = .exact
                 options.isNetworkAccessAllowed = true
-                let requestID = self.photoLibrary.imageAsset(asset: phAsset, size: self.thumbnailSize, options: options) { [weak self, weak cell] (image,complete) in
+                let requestID = self.photoLibrary.imageAsset(asset: phAsset, size: self.adjustedThumbnailSize, options: options) { [weak self, weak cell] (image,complete) in
                     guard let `self` = self else { return }
                     DispatchQueue.main.async {
                         if self.requestIDs[indexPath] != nil {
@@ -911,7 +916,7 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             }else {
                 queue.async { [weak self, weak cell] in
                     guard let `self` = self else { return }
-                    let requestID = self.photoLibrary.imageAsset(asset: phAsset, size: self.thumbnailSize, completionBlock: { (image,complete) in
+                    let requestID = self.photoLibrary.imageAsset(asset: phAsset, size: self.adjustedThumbnailSize, completionBlock: { (image,complete) in
                         DispatchQueue.main.async {
                             if self.requestIDs[indexPath] != nil {
                                 cell?.imageView?.image = image
@@ -966,7 +971,7 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
                     }
                 }
                 let scale = max(UIScreen.main.scale,2)
-                let targetSize = CGSize(width: self.thumbnailSize.width*scale, height: self.thumbnailSize.height*scale)
+                let targetSize = CGSize(width: self.adjustedThumbnailSize.width*scale, height: self.adjustedThumbnailSize.height*scale)
                 self.photoLibrary.imageManager.startCachingImages(for: assets, targetSize: targetSize, contentMode: .aspectFill, options: nil)
             }
         }
@@ -988,7 +993,7 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
                     }
                 }
                 let scale = max(UIScreen.main.scale,2)
-                let targetSize = CGSize(width: self.thumbnailSize.width*scale, height: self.thumbnailSize.height*scale)
+                let targetSize = CGSize(width: self.adjustedThumbnailSize.width*scale, height: self.adjustedThumbnailSize.height*scale)
                 self.photoLibrary.imageManager.stopCachingImages(for: assets, targetSize: targetSize, contentMode: .aspectFill, options: nil)
             }
         }
